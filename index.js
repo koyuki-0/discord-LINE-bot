@@ -15,15 +15,15 @@ const { loadErrors } = require('./handlers/errorHandler');
 
 // クライアントインスタンスと呼ばれるオブジェクトを作成します
 const client = new Client({ 
-    intents: [Guilds, GuildMembers, GuildMessages, MessageContent],
+    intents: [Guilds, GuildMessages, MessageContent],
     partials: [User, Message, GuildMember, ThreadMember]
 });
 // We recommend attaching a .commands property to your client instance so that you can access your commands in other files. 
+const config = require('./config.json');
 client.config = {
+    ...config,
     token: process.env.DISCORD_TOKEN,
-    clientId: process.env.DISCORD_CLIENT_ID,
-    mongoURI: process.env.MONGO_URI,
-    errReportChId: process.env.ERROR_REPORT_CHANNEL_ID
+    LINE_ACCESS_TOKEN: process.env.LINE_ACCESS_TOKEN 
 };
 client.commands = new Collection();
 
