@@ -1,6 +1,7 @@
 require('dotenv').config(); // ローカルの.envファイルを読み込む
 const fs = require('node:fs');
 const path = require('node:path');
+const http = require('http');
 
 const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const { Guilds, GuildMessages, MessageContent } = GatewayIntentBits;
@@ -38,6 +39,17 @@ client.commands = new Collection();
             loadCommands(client);
             loadErrors(client);
             console.log("loaded everything");
+
+            // Add this section for the web server to bind to a port for Render.com
+            const port = process.env.PORT || 3000; // Render.com will provide PORT
+            http.createServer((req, res) => {
+                res.writeHead(200, { 'Content-Type': 'text/plain' });
+                res.end('Discord bot is running!\n');
+            }).listen(port, () => {
+                console.log(`Web server listening on port ${port}`);
+            });
+            // End of web server section
+
         });
     } catch (err) {
         console.log(`! login failed: ${err}`);
