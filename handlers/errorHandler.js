@@ -1,17 +1,20 @@
 const { Client, EmbedBuilder } = require('discord.js');
-const { errReportChId } = require('../config.json');
 
 /**
  * @param { Client } client
  */
 
 async function loadErrors(client) {
+    // client.configからIDを取得するように変更
+    const errReportChId = client.config.errReportChId;
+
     async function logErr(description, consoleLog1, consoleLog2) {
-        //console.log(consoleLog1);
-        //console.log(consoleLog2);
         if(consoleLog1 == "" && consoleLog2 == "") {
             return;
         }
+
+        // IDが設定されていない場合は何もしない
+        if (!errReportChId) return;
 
         let botCh = await client.channels.cache.get(errReportChId);
         if (!botCh) botCh = await client.application.owner; //DM when unable to get bot-channel obj
